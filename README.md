@@ -43,4 +43,16 @@ In order to perform training with streamer:
 
 ---
 
+Citing STREAMER
+-------
+If you find our approaches useful in your research, please consider citing:
+```
+@inproceedings{mounir2023streamer,
+  title={STREAMER: Streaming Representation Learning and Event Segmentation in a Hierarchical Manner},
+  author={Mounir, Ramy and Vijayaraghavan, Sujal and Sarkar, Sudeep},
+  booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+  year={2023}
+}
+```
+
 
