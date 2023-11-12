@@ -1,0 +1,6 @@
+#!/bin/sh
+
+conda env export --no-build --from-history | grep -v "^prefix: " > environment.yml
+conda env export --no-build | sed -n '/\- pip\:/,$p' | grep -v "^prefix: " >> environment.yml
+
+pip list --format=freeze > requirements.txt
