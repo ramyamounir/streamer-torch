@@ -15,7 +15,7 @@ Checkout the [documentation](https://ramymounir.com/docs/streamer/) of STREAMER 
 ### Installation
 
 ```bash
-pip install streamer-neurIPS23 # with pip from PyPI
+pip install streamer-neurips23 # with pip from PyPI
 pip install git+'https://github.com/ramyamounir/streamer-neurips23' # with GitHub
 ```
 
@@ -35,7 +35,7 @@ result = model(filename='to/video/file/path')
 
 In order to perform training with streamer:
 
-1. Use the [Dataset README.md](streamer/datasets/README.md) to preprocess datasets for streaming loading and evaluation.
+1. Use the [Dataset README.md](streamer/preprocessing/README.md) to preprocess datasets for streaming loading and evaluation.
 2. Use the provided [training script](streamer/train.py) to train on multiple gpus (i.e., or multi-node).
 3. The script `streamer/experiments/compare.py` can be used to evaluate the model's prediction using Hierarchical Level Reduction.
 
