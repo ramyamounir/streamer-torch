@@ -12,7 +12,7 @@ From the PyPI registry
 
 .. code:: bash
 
-    pip install streamer-neurips23
+    pip install streamer-torch
 
 From GitHub
 -----------
@@ -24,15 +24,15 @@ From GitHub
 
 .. code:: bash
 
-    pip install git+'https://github.com/ramyamounir/streamer-neurips23'
+    pip install git+'https://github.com/ramyamounir/streamer-torch'
 
 From source
 ------------------------
 
 .. code:: bash
 
-    > git clone https://github.com/ramyamounir/streamer-neurips23
-    > cd streamer-neurips23
+    > git clone https://github.com/ramyamounir/streamer-torch
+    > cd streamer-torch
 
     > pip install .
 

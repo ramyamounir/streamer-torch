@@ -1,6 +1,5 @@
 import os
 import json
-# from tqdm.contrib import tzip
 from tqdm import tqdm
 from argparse import ArgumentParser
 from hlr import AnnotationsAsGraph

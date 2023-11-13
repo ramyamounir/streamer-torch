@@ -1,9 +1,3 @@
-'''
-Copyright (c) Ramy Mounir
-
-The script creates a summary of the videos which is needed in the dataset function later in the STREAMER dataloader.
-'''
-
 import os, argparse
 import json
 from glob import glob

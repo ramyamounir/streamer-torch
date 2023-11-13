@@ -1,9 +1,3 @@
-'''
-Copyright (c) Ramy Mounir
-
-This file preprocesses a video dataset by extracting frames at the desired fps and rescales frames to the desired resolution. 
-'''
-
 import os, shutil, argparse
 import librosa
 import numpy as np
