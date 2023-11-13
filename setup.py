@@ -1,12 +1,15 @@
 from setuptools import setup, find_packages
 
+from streamer import __version__, __build__
+
+
 with open("README.md", "r", encoding="utf-8") as f:
   long_description = f.read()
 
 setup(
   name="streamer-torch",
-  version="0.0.1",
-  build="0",
+  version=__version__,
+  build=__build__,
   author="Ramy Mounir",
   url="https://ramymounir.com/docs/streamer/",
   description=r"""Official implementation of STREAMER, a self-supervised hierarchical event segmentation and representation learning""",

@@ -1,0 +1,6 @@
+---
+conda_build_config:
+  variants:
+    - pytorch: [2.0]
+    - numpy: [1.22]
+...

@@ -1,0 +1,47 @@
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
+
+package:
+  name: streamer-torch
+  version: {{ data.get('version') }}
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  number: {{ data.get('build') }}
+  script: {{ PYTHON }} setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - setuptools
+    - python
+    - numpy
+    - pytorch
+  run:
+    - numpy
+    - pytorch
+    - ddpw
+    - opencv-python-headless
+    - tqdm
+    - scikit-video
+    - matplotlib
+    - torchvision
+    - tensorboard
+    - pandas
+    - moviepy
+    - librosa
+    - pillow
+      
+
+
+about:
+  home: https://ramymounir.com/publications/streamer/
+  summary: Official implementation of STREAMER, a self-supervised hierarchical event segmentation and representation learning
+  description: "The official PyTorch implementation of our NeurIPS paper STREAMER: Streaming Representation Learning and Event Segmentation in a Hierarchical Manner"
+  license: Attribution-NonCommercial-ShareAlike 4.0 International License
+  dev_url: https://github.com/ramyamounir/streamer-torch
+  doc_url: https://ramymounir.com/docs/streamer/
+  doc_source_url: https://github.com/ramyamounir/streamer-torch/tree/main/docs
+
+
