@@ -33,6 +33,6 @@ def find_dataset_using_name(args):
     dataset_args = dataset_args_class.from_args(args)
     dataset = dataset_class(dataset_args)
     args.snippet_size = dataset.snippet_size
-    loader = DataLoader(dataset=dataset, batch_size=1, num_workers= 1, pin_memory=True)
+    loader = DataLoader(dataset=dataset, batch_size=1, num_workers= args.num_workers, pin_memory=True)
 
     return loader

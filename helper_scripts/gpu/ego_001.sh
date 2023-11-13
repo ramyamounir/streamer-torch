@@ -3,26 +3,30 @@ exp_name='ego_001'
 python train.py \
     --dataset data/ego4d  \
     --name "$exp_name"_train \
-    --type streamer \
     --p_device gpu \
-    --dataset_split train \
+    --p_n_gpus 8 \
     --dataset_percent 25 \
-    --buffer_size 10 \
+    \
+    --max_layers 3 \
+    --evolve_every 50000 \
+    --buffer_size 20 \
+    --force_fixed_buffer True \
+    \
     --demarcation_mode average \
-    --normalize_imgs False \
     --distance_mode similarity \
-    --optimize True \
+    \
+    --lr 1e-4 \
+    --alpha 3 \
     --optimize_every 100 \
     --average_every 100 \
-    --evolve_every 50000 \
+    --optimize True \
     --save_every 25000 \
-    --lr 1e-4 \
-    --log_base_every 1000 \
+    \
+    --dbg \
+    --tb \
     --log_prefix /data/D2/datasets/ego4d/videos/ \
     --log_postfix MP4 \
-    --max_layers 3 \
-    --tb \
-    --dbg \
+    --log_base_every 1000 \
 
 # Check the exit code of the first script
 if [ $? -eq 0 ]; then
