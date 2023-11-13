@@ -1,30 +1,36 @@
-ckpt_name='ego_001'
-exp_name='epic_006'
+exp_name='epic_001'
 
 python train.py \
     --dataset data/epic  \
     --name "$exp_name"_train \
     --type streamer \
-    --init_ckpt $(ls -1 out/"$exp_name"_train/checkpoints/model_*.pth 2>/dev/null | sort -t_ -k2 -n | tail -n 1) \
+    --p_name epic
+    --p_device slurm \
+    --p_partition general \
+    --p_n_nodes 2 \
+    --p_n_gpus 4 \
+    --p_n_cpus 2 \
+    --p_ram 32 \
     --dataset_split train \
     --dataset_percent 100 \
     --buffer_size 10 \
     --demarcation_mode average \
     --loss_threshold 0.1 \
-    --distance_mode distance \
+    --distance_mode similarity \
     --window_size 50 \
     --modifier_type multiply \
     --modifier 1 \
+    --optimize True \
     --optimize_every 10 \
-    --lr 1e-4 \
+    --average_every 10 \
     --log_base_every 100 \
+    --init_layers 2 \
+    --lr 1e-4 \
     --log_prefix /data/D2/datasets/epic_kitchen/videos/ \
     --log_postfix MP4 \
-    --optimize_every 10 \
     --evolve_every 10000 \
+    --save_every 10000 \
     --max_layers 3 \
-    --force_base_dist \
-    --optimize \
     --tb \
     --dbg \
 
@@ -37,10 +43,18 @@ else
 fi
 
 
+
 python train.py \
     --dataset data/epic  \
     --name "$exp_name"_test \
     --type streamer \
+    --p_name epic
+    --p_device slurm \
+    --p_partition general \
+    --p_n_nodes 2 \
+    --p_n_gpus 4 \
+    --p_n_cpus 2 \
+    --p_ram 32 \
     --init_ckpt $(ls -1 out/"$exp_name"_train/checkpoints/model_*.pth 2>/dev/null | sort -t_ -k2 -n | tail -n 1) \
     --dataset_split test \
     --dataset_percent 100 \
@@ -51,13 +65,11 @@ python train.py \
     --window_size 50 \
     --modifier_type multiply \
     --modifier 1 \
-    --optimize_every 1 \
+    --optimize False \
     --buffer_size 10 \
     --lr 1e-4 \
     --log_base_every 100 \
     --log_prefix /data/D2/datasets/epic_kitchen/videos/ \
-    --optimize_every 1 \
-    --force_base_dist \
     --tb \
     --dbg \
 
@@ -69,4 +81,6 @@ else
     echo "Testing failed with exit code $?"
     exit $?
 fi
+
+
 

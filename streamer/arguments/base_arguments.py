@@ -29,7 +29,18 @@ def parse_args():
     parser.add_argument('--output', type=str, default='out', help='Path to output folder')
     parser.add_argument('--type', type=str, choices=['streamer', 'dreamer'], default='streamer', help='model type')
     parser.add_argument('--name', type=str, default='my_model', help='name of the experiment')
-    parser.add_argument('--gpus', type=str, default='', help='gpu ids: e.g. 0,1,2')
+
+    # Platform settings
+    parser.add_argument('--p_name', type=str, default='job', help='platform job name for slurm')
+    parser.add_argument('--p_device', type=str, choices=['gpu', 'slurm', 'cpu', 'mps'], default='gpu', help='platform device')
+    parser.add_argument('--p_partition', type=str, default='general', help='platform partition with slurm')
+    parser.add_argument('--p_n_nodes', type=int, default=1, help='platform number of nodes with slurm')
+    parser.add_argument('--p_n_gpus', type=int, default=1, help='platform number of gpus')
+    parser.add_argument('--p_n_cpus', type=int, default=2, help='platform number of total cpus per process')
+    parser.add_argument('--p_ram', type=int, default=10, help='platform number of total ram in GB')
+    parser.add_argument('--p_backend', type=str, choices=['nccl', 'gloo'], default='nccl', help='platform backend')
+    parser.add_argument('--p_verbose', type=bool_flag, default=True, help='platform verbose')
+    parser.add_argument('--p_logs', type=str, default='./logs', help='platform console logs')
 
     # dataset arguments
     parser.add_argument('--frame_size', type=int, nargs='+', default=[128,128], help='frame size')

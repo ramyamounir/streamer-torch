@@ -32,7 +32,6 @@ def checkdir(path, reset = True):
     return path
 
 
-
 def setup_output(args):
 
     assert os.path.exists(args.dataset)
@@ -41,16 +40,11 @@ def setup_output(args):
     # create output directory
     args.exp_output = checkdir(os.path.join(args.output, args.name))
     args.ckpt_dir = checkdir(f'{args.exp_output}/checkpoints')
+    args.world_size = args.p_n_gpus * args.p_n_nodes
 
-    # set distributed arguments
-    args.rank = 0
-    args.port = random.randint(49152,65535)
-    args.dist_url = f'tcp://localhost:{args.port}'
-    args.world_size = torch.cuda.device_count()
-    if args.gpus != '': os.environ['CUDA_VISIBLE_DEVICES'] = args.gpus
-
-    # save commandline arguments
+    # save commandline arguments and logs
     json.dump(args.__dict__, open(osp.join(args.exp_output, 'args.json'), 'w'), indent=2)
+    args.p_logs = osp.join(args.exp_output, 'console_logs')
 
     return args
 

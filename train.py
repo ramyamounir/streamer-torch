@@ -1,18 +1,24 @@
+import torch
 import torch.nn.functional as F
 import torch.distributed as dist
 import torch.multiprocessing as mp
+from ddpw import Platform, Wrapper
 
-import datasets, models, optimizers
-from arguments.base_arguments import parse_args
-from utils.distributed import init_gpu
-from utils.logging import setup_output, JsonLogger
+from streamer.arguments.base_arguments import parse_args
+from streamer.utils.distributed import init_gpu
+from streamer.utils.logging import setup_output, JsonLogger
+
+import streamer.datasets as datasets
+import streamer.models as models
+import streamer.optimizers as optimizers
 from tqdm import tqdm
 
 
-def train_gpu(gpu, args):
+
+def train_gpu(global_rank, local_rank, args):
 
     # initialize gpu and tb writer, and return json logger
-    init_gpu(gpu, args)
+    init_gpu(global_rank, local_rank, args)
 
     # get dataloader instance
     loader = datasets.find_dataset_using_name(args)
@@ -57,15 +63,18 @@ def train_gpu(gpu, args):
             model.save_model()
 
         # distributed barrier
-        if args.optimize: dist.barrier()
+        if args.world_size>1 and args.optimize: 
+            dist.barrier()
+
 
 
     # save model every args.save_every
     if args.optimize and batch_ix % args.save_every == 0:
         model.save_model()
 
-    dist.barrier()
-    dist.destroy_process_group()
+    if args.world_size > 1:
+        dist.barrier()
+        dist.destroy_process_group()
 
     if args.logger != None: del args.logger
 
@@ -75,5 +84,21 @@ if __name__ == "__main__":
     args = parse_args()
     args = setup_output(args)
 
-    mp.spawn(train_gpu, args = (args,), nprocs = args.world_size)
+    platform = Platform(
+                    name=args.p_name,
+                    device=args.p_device,
+                    partition=args.p_partition,
+                    n_nodes=args.p_n_nodes,
+                    n_gpus=args.p_n_gpus,
+                    n_cpus=args.p_n_cpus,
+                    ram=args.p_ram,
+                    backend=args.p_backend,
+                    console_logs=args.p_logs,
+                    verbose=args.p_verbose
+                        )
+
+    wrapper = Wrapper(platform=platform)
+
+    # start training
+    wrapper.start(train_gpu, args = args)
 

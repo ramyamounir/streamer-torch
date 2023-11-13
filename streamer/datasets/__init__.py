@@ -10,7 +10,7 @@ def find_dataset_using_name(args):
     """
 
     dataset_name = os.path.split(args.dataset.rstrip('/'))[-1]
-    dataset_filename = "datasets." + dataset_name + "_dataset"
+    dataset_filename = "streamer.datasets." + dataset_name + "_dataset"
     datasetlib = importlib.import_module(dataset_filename)
 
     dataset_class = None

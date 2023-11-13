@@ -2,7 +2,7 @@ import importlib
 
 def getOptimizer(args, model):
 
-    model_filename  = f'optimizers.{args.type}_optimizer'
+    model_filename  = f'streamer.optimizers.{args.type}_optimizer'
     modellib = importlib.import_module(model_filename)
 
     optimizer_class = None

@@ -16,7 +16,7 @@ def getLogger(args):
     else:
         quit('dataset not found')
 
-    logger_filename  = f'loggers.{modality}_logger'
+    logger_filename  = f'streamer.loggers.{modality}_logger'
     modellib = importlib.import_module(logger_filename)
 
     logger_class = None

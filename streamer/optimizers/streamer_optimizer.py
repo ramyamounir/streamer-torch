@@ -145,7 +145,8 @@ class StreamerOptimizer():
             params = [*self.p_params[layer_num]]
             for g_i in group: params.extend(self.f_params[g_i])
 
-            (layer_loss*layer_timescale*reach).backward(inputs=params, retain_graph=(g_i!=(len(groups)-1)))
+            retain_graph = g_i!=(len(groups)-1) or True
+            (layer_loss*layer_timescale*reach).backward(inputs=params, retain_graph=retain_graph)
             for i in group: self.f_counter[i] += layer_timescale
 
         # reset loss
@@ -177,6 +178,10 @@ class StreamerOptimizer():
         l_global = torch.tensor([0.0]).cuda()
         l_global = self.model.streamer.get_num_layers(l_global)
         l_local = l_global.clone()
+
+        if self.args.world_size == 1:
+            return True, int(l_local.item())
+
         dist.all_reduce(l_global)
         return l_local*self.args.world_size == l_global, int(l_local.item())
 
@@ -226,7 +231,7 @@ class StreamerOptimizer():
         """
 
         # === AVERAGE MODELS === #
-        self.average_counter += 1
+        if self.args.world_size > 1: self.average_counter += 1
 
         equal, n_layers = self.equal_layers()
         if n_layers > self.curr_n_layers: 
@@ -238,7 +243,7 @@ class StreamerOptimizer():
 
 
         # === OPTIMIZATION === #
-        self.get_gradients()
+        self.get_gradients() # backwards
         if self.step_counter[self.curr_n_layers-1] >= self.args.optimize_every:
             self.scale_gradients()
             self.model.optimize_model()

@@ -16,7 +16,7 @@ class EpicDatasetArguments():
     world_size: int
     r"""Number of gpus to distribute the dataset"""
 
-    rank: int
+    global_rank: int
     r"""The rank of the running device"""
 
     dataset: str
@@ -35,7 +35,7 @@ class EpicDatasetArguments():
     def from_args(args):
         return EpicDatasetArguments(
                 world_size=args.world_size, 
-                rank=args.rank, 
+                global_rank=args.global_rank, 
                 dataset=args.dataset, 
                 frame_size=args.frame_size,
                 percentage=args.dataset_percent,
@@ -75,7 +75,7 @@ class EpicDataset(Dataset):
         self.min_sum, self.gpu_train_paths = self.split_dict_greedy(
                 {k:[v, v] for k,v in self.vids_paths.items()}, 
                 args.world_size,
-                args.rank)
+                args.global_rank)
 
         self.prepare_data(make_equal=(args.split=='train'))
         self.len = len(self.data)

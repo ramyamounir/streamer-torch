@@ -1,4 +1,4 @@
-from loggers.logger import Logger
+from streamer.loggers.logger import Logger
 import torch
 
 class AudioLogger(Logger):

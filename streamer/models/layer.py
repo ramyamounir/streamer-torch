@@ -221,6 +221,10 @@ class StreamerLayer(nn.Module):
         self.p.zero_grad()
         self.l.zero_grad()
 
+        # reset representations because parameters have changed
+        self.representation = None
+        self.context = None
+
         if self.above != None:
             self.above.optimize_layer()
 
@@ -288,7 +292,7 @@ class StreamerLayer(nn.Module):
         self.x_size = base_counter - self.last_base_counter
         self.last_base_counter = base_counter
 
-        # check if layer is new
+        # check if layer is new or recently optimized
         if self.context == None:
             self.buffer.reset_buffer()
             self.buffer.add_input(x, 0.0)

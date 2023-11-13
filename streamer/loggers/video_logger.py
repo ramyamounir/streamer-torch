@@ -1,9 +1,9 @@
 import torch, math
 import torch.nn as nn
 import torch.nn.functional as F
-from loggers.logger import Logger
+from streamer.loggers.logger import Logger
 from torchvision.utils import make_grid
-from utils.logging import TBWriter
+from streamer.utils.logging import TBWriter
 import matplotlib.cm as cm
 import numpy as np
 

@@ -1,9 +1,10 @@
-exp_name='ego_011'
+exp_name='ego_001'
 
 python train.py \
     --dataset data/ego4d  \
     --name "$exp_name"_train \
     --type streamer \
+    --p_device gpu \
     --dataset_split train \
     --dataset_percent 25 \
     --buffer_size 10 \
