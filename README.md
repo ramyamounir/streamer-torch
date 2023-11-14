@@ -1,10 +1,7 @@
 # STREAMER
   
-%% [![Conda](https://img.shields.io/conda/v/ramymounir/streamer-torch)](https://anaconda.org/ramymounir/streamer-torch)
 [![PyPI](https://img.shields.io/pypi/v/streamer-torch)](https://pypi.org/project/streamer-torch/)
-
-%% [![Publish to Anaconda](https://github.com/ramyamounir/streamer-torch/actions/workflows/conda_publish.yml/badge.svg)](https://github.com/ramyamounir/streamer-torch/actions/workflows/conda_publish.yaml)
-[![Publish to PyPI](https://github.com/ramyamounir/streamer-torch/actions/workflows/pypi_publish.yml/badge.svg)](https://github.com/ramyamounir/streamer-torch/actions/workflows/pypi_publish.yaml)
+[![Publish to PyPI](https://github.com/ramyamounir/streamer-torch/actions/workflows/pypi_publish.yaml/badge.svg)](https://github.com/ramyamounir/streamer-torch/actions/workflows/pypi_publish.yaml)
 
 The official PyTorch implementation of our NeurIPS'23 paper [STREAMER: Streaming Representation Learning and Event Segmentation in a Hierarchical Manner](https://ramymounir.com/publications/streamer/)
 
