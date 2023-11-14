@@ -21,6 +21,7 @@ extensions = [
   "sphinx.ext.viewcode",
   "sphinx_copybutton",
   "sphinxcontrib.bibtex",
+  "sphinxarg.ext"
 ]
 
 html_theme = 'furo'

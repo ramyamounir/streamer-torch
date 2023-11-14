@@ -1,10 +1,8 @@
-import torch
 import torch.nn.functional as F
 import torch.distributed as dist
-import torch.multiprocessing as mp
 from ddpw import Platform, Wrapper
 
-from streamer.arguments.base_arguments import parse_args
+from streamer.arguments.base_arguments import parser
 from streamer.utils.distributed import init_gpu
 from streamer.utils.logging import setup_output, JsonLogger
 
@@ -81,7 +79,7 @@ def train_gpu(global_rank, local_rank, args):
 
 if __name__ == "__main__":
 
-    args = parse_args()
+    args = parser().parse_args()
     args = setup_output(args)
 
     platform = Platform(

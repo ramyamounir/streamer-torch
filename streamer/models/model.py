@@ -64,16 +64,6 @@ class StreamerModelArguments():
     modifier: float = 1.0
     r"""Modifier to apply to avrrage demarcation mode"""
 
-    fp_up: bool = True
-    r"""Allow bottom up inference"""
-
-    fp_down: bool = True
-    r"""Allow top down inference"""
-
-    l1_loss_weight: float = 100
-    r"""L1 loss weight. Not used in the current loss implementation"""
-
-
     @staticmethod
     def from_args(args):
         return StreamerModelArguments(
@@ -89,7 +79,6 @@ class StreamerModelArguments():
                 buffer_size=args.buffer_size,
                 force_fixed_buffer=args.force_fixed_buffer,
                 loss_threshold=args.loss_threshold,
-                l1_loss_weight=args.l1_loss_weight,
                 lr=args.lr,
                 demarcation_mode=args.demarcation_mode,
                 distance_mode=args.distance_mode,
@@ -97,8 +86,6 @@ class StreamerModelArguments():
                 window_size=args.window_size,
                 modifier_type=args.modifier_type,
                 modifier=args.modifier,
-                fp_up=args.fp_up,
-                fp_down=args.fp_down
         )
 
 
@@ -117,7 +104,6 @@ class StreamerModelArguments():
                 buffer_size=args.buffer_size,
                 force_fixed_buffer=args.force_fixed_buffer,
                 loss_threshold=args.loss_threshold,
-                l1_loss_weight=args.l1_loss_weight,
                 lr=args.lr,
                 demarcation_mode=args.demarcation_mode,
                 distance_mode=args.distance_mode,
@@ -226,24 +212,14 @@ class StreamerModel(nn.Module):
             (*torch.Tensor*): concatenated representations from all layers [L, feature_dim]
 
         """
-
-        def check_fp(layer, curr_layer):
-            down, up = (layer < curr_layer), (layer > curr_layer)
-
-            if not (up or down): return True
-            if up and self.args.fp_up: return True
-            if down and self.args.fp_down: return True
-            return False
-
         curr_layer_num = 0
         ll = self.streamer
-        reps = [ll.representation] if check_fp(layer_num, curr_layer_num) else [ll.representation.detach()]
+        reps = [ll.representation]
 
         while ll.above != None and ll.above.representation != None:
             curr_layer_num += 1
             ll = ll.above
-            if check_fp(layer_num, curr_layer_num): reps.append(ll.representation)
-            else: reps.append(ll.representation.detach())
+            reps.append(ll.representation)
 
         return torch.cat(reps, dim=0)
 

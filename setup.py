@@ -23,7 +23,7 @@ setup(
   python_requires='>=3.10',
   install_requires=[
       'torch>=2.0.0',
-      'ddpw>=5.1.0',
+      'ddpw>=5.1.1',
       'opencv-python-headless',
       'tqdm',
       'scikit-video',

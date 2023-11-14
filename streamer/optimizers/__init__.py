@@ -2,13 +2,13 @@ import importlib
 
 def getOptimizer(args, model):
 
-    model_filename  = f'streamer.optimizers.{args.type}_optimizer'
+    model_filename  = f'streamer.optimizers.streamer_optimizer'
     modellib = importlib.import_module(model_filename)
 
     optimizer_class = None
     optimizer_args_class = None
-    target_optimizer_name =  f'{args.type}Optimizer'
-    target_optimizer_args_name =  f'{args.type}OptimizerArguments'
+    target_optimizer_name =  f'StreamerOptimizer'
+    target_optimizer_args_name =  f'StreamerOptimizerArguments'
     for name, cls in modellib.__dict__.items():
         if name.lower() == target_optimizer_name.lower():
             optimizer_class = cls

@@ -62,9 +62,6 @@ class StreamerLayerArguments():
     force_fixed_buffer: bool = False
     r"""Force the buffer to be fixed (not replacing inputs) by triggering a boundary when buffer is full"""
 
-    l1_loss_weight: float = 1.0
-    r"""L1 loss weight. Not used in the current loss implementation"""
-
     @staticmethod
     def from_model_args(args):
         return StreamerLayerArguments(
@@ -83,7 +80,6 @@ class StreamerLayerArguments():
                 window_size=args.window_size,
                 modifier_type=args.modifier_type,
                 modifier=args.modifier,
-                l1_loss_weight=args.l1_loss_weight,
         )
 
 class StreamerLayer(nn.Module):

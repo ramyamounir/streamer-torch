@@ -1,10 +1,10 @@
 STREAMER
 ########
 
-**STREAMER** is a predictive learning model that uses continually train to improve its future predictions at different timescales.
+**STREAMER** is a predictive learning model that continually trains to improve its future predictions at different timescales.
 It uses the prediction error to segment events in a hierarchical manner while processing streaming videos.
 
-We provide code snippet in the API documentation on how to instantiate different classes.
+We provide code snippets in the API documentation on how to instantiate different classes.
 We also provide simple training and inference scripts to reproduce the results in the `NeurIPS'23 paper <https://ramymounir.com/publications/streamer/>`_.
 
 
@@ -13,28 +13,36 @@ Training Script
 
 
 .. note::
-    This training script uses commandline arguments as defined in the `code <https://github.com/ramyamounir/streamer-neurips23/blob/main/streamer/arguments/base_arguments.py>`_.
-    Pretrained weights will be released soon..
+    This `training script <https://github.com/ramyamounir/streamer-torch/blob/main/train.py>`_ uses commandline arguments as defined in the :ref:`Arguments <Arguments>`.
+
+    The `helper bash scripts <https://github.com/ramyamounir/streamer-torch/tree/main/helper_scripts>`_ have predefined arguments for gpu and slurm machines for Ego4d and EPIC-KITCHENS datasets.
+
+.. note::
+    We use the `DDPW library <https://ddpw.projects.sujal.tv/>`_ to easily parallelize the code on multiple GPUs or multiple nodes on SLURM.
 
 
 .. code-block:: python
-    :emphasize-lines: 18,21,43,46
+    :emphasize-lines: 22,25,29,47,50
 
     import torch.nn.functional as F
     import torch.distributed as dist
-    import torch.multiprocessing as mp
+    from ddpw import Platform, Wrapper
 
-    import datasets, models, optimizers
-    from arguments.base_arguments import parse_args
-    from utils.distributed import init_gpu
-    from utils.logging import setup_output, JsonLogger
+    from streamer.arguments.base_arguments import parser
+    from streamer.utils.distributed import init_gpu
+    from streamer.utils.logging import setup_output, JsonLogger
+
+    import streamer.datasets as datasets
+    import streamer.models as models
+    import streamer.optimizers as optimizers
     from tqdm import tqdm
 
 
-    def train_gpu(gpu, args):
+
+    def train_gpu(global_rank, local_rank, args):
 
         # initialize gpu and tb writer, and return json logger
-        init_gpu(gpu, args)
+        init_gpu(global_rank, local_rank, args)
 
         # get dataloader instance
         loader = datasets.find_dataset_using_name(args)
@@ -79,23 +87,45 @@ Training Script
                 model.save_model()
 
             # distributed barrier
-            if args.optimize: dist.barrier()
+            if args.world_size>1 and args.optimize: 
+                dist.barrier()
+
 
 
         # save model every args.save_every
         if args.optimize and batch_ix % args.save_every == 0:
             model.save_model()
 
-        dist.barrier()
-        dist.destroy_process_group()
+        if args.world_size > 1:
+            dist.barrier()
+            dist.destroy_process_group()
 
         if args.logger != None: del args.logger
 
 
-    args = parse_args()
-    args = setup_output(args)
+    if __name__ == "__main__":
 
-    mp.spawn(train_gpu, args = (args,), nprocs = args.world_size)
+        args = parser().parse_args()
+        args = setup_output(args)
+
+        platform = Platform(
+                        name=args.p_name,
+                        device=args.p_device,
+                        partition=args.p_partition,
+                        n_nodes=args.p_n_nodes,
+                        n_gpus=args.p_n_gpus,
+                        n_cpus=args.p_n_cpus,
+                        ram=args.p_ram,
+                        backend=args.p_backend,
+                        console_logs=args.p_logs,
+                        verbose=args.p_verbose
+                            )
+
+        wrapper = Wrapper(platform=platform)
+
+        # start training
+        wrapper.start(train_gpu, args = args)
+
 
 
 ====
@@ -103,6 +133,10 @@ Training Script
 
 Inference Script
 ================
+
+
+.. note::
+    Pretrained weights will be released soon..
 
 
 .. code-block:: python
@@ -129,6 +163,7 @@ Inference Script
    :hidden:
    :titlesonly:
 
+   api/arguments
    api/core
    api/datasets
    api/optimizer

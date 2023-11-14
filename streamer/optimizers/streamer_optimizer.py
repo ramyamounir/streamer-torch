@@ -28,12 +28,6 @@ class StreamerOptimizerArguments():
     hgn_reach: bool = True
     r"""Allow reach parameter in Hierarchical Gradient Normalization"""
 
-    bp_up: bool = True
-    r"""Allow bottom up optimization"""
-
-    bp_down: bool = True
-    r"""Allow top down optimization"""
-
     @staticmethod
     def from_args(args):
         return StreamerOptimizerArguments(
@@ -44,10 +38,7 @@ class StreamerOptimizerArguments():
                 average_every=args.average_every,
                 hgn_timescale = args.hgn_timescale,
                 hgn_reach = args.hgn_reach,
-                bp_up = args.bp_up,
-                bp_down = args.bp_down
         )
-
 
 
 class StreamerOptimizer():
@@ -116,13 +107,6 @@ class StreamerOptimizer():
 
         return n_layers
 
-    def check_bp(self, layer, curr_layer):
-        up, down = (layer < curr_layer), (layer > curr_layer)
-        if not (up or down): return True
-        if up and self.args.bp_up: return True
-        if down and self.args.bp_down: return True
-        return False
-
 
     def update_all_layers(self, layer):
 
@@ -138,8 +122,6 @@ class StreamerOptimizer():
         groups, reaches = self.get_param_groups(layer_num)
 
         for g_i, (group, reach) in enumerate(zip(groups, reaches)):
-
-            # if not self.check_bp(layer_num, i): continue # need to be fixed
 
             # get parameters to accumulate
             params = [*self.p_params[layer_num]]

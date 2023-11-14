@@ -37,8 +37,8 @@ Streamer Model
 ====
 
 
-Streamer Inference Model
-========================
+Streamer Inference
+==================
 
 .. code-block:: python
 

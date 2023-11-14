@@ -4,7 +4,7 @@ python train.py \
     --dataset data/epic  \
     --name "$exp_name"_train \
     --p_device gpu \
-    --p_n_gpus 8 \
+    --p_n_gpus 1 \
     --dataset_split train \
     --dataset_percent 100 \
     \
