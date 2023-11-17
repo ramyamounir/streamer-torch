@@ -76,7 +76,7 @@ def parser():
     parser.add_argument('--hgn_reach', type=bool_flag, default=True, help='Optimize with reach of influence')
 
     # debugging and logging arguments
-    parser.add_argument('--dbg', action='store_false', help='Flag for debugging and development. Overrides log files.')
+    parser.add_argument('--dbg', action='store_true', help='Flag for debugging and development. Overrides log files.')
     parser.add_argument('--tb', action='store_true', help='Flag for tb logging. If False, does not save tensorboard files.')
     parser.add_argument('--log_prefix', type=str, default='/data/D2/datasets/epic_kitchen/videos/', help='Prefix to write in json file')
     parser.add_argument('--log_postfix', type=str, default='MP4', help='Postfix extension to write in json file')

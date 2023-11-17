@@ -13,8 +13,7 @@ Optimizer
                                             average_every=100,
                                             hgn_timescale=True,
                                             hgn_reach=True,
-                                            bp_up=True,
-                                            bp_down=True)
+                                            )
     optimizer = StreamerOptimizer(optim_args)
 
 

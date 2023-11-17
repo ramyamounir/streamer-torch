@@ -17,7 +17,7 @@ From the PyPI registry
 From GitHub
 -----------
 
-.. image:: https://img.shields.io/badge/github-streamer-torch-skyblue
+.. image:: https://img.shields.io/badge/github-streamer-torch
     :target: https://github.com/ramyamounir/streamer-torch
     :width: 75
     :alt: PyPI publication
@@ -43,7 +43,7 @@ From source
 -----------
 
 
-.. image:: https://img.shields.io/badge/github-streamer-torch-skyblue
+.. image:: https://img.shields.io/badge/github-streamer-torch
     :target: https://github.com/ramyamounir/streamer-torch
     :width: 75
     :alt: PyPI publication
